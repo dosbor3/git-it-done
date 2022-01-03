@@ -44,4 +44,4 @@ var getUserRepos = function(user) {
     });
 };
 
-getUserRepos("microsoft");
+userFormEl.addEventListener("submit", formSubmitHandler);
