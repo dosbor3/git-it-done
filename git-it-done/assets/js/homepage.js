@@ -1,24 +1,3 @@
-/*
-By the end of 6.1, fetch() API was used to make an HTTP request to the GitHub APL, and a response formatted in JSON was retrieved.
-At this point, we still need to allow users to search for any GitHub Account they want, and we need to display the data to the page.
-Currentlyk, we have the request hardcoded to a specific URL, meaning that the HTTP request will alwas search for the same GitHub 
-account.
-
-We will use HTML and browser events to capture dynamic user input to search for different GitHub accounts.  Then we'll interate the 
-response data through each repository's data, and we'll display the important parts of it to the page.
-
-In this lesson (6.2) we will collect user input to form HTTP request, use an HTTP request's response to display data to the user, 
-and handle errors that may occur when working wiht server-side APIs
-
-Steps:
-1.  Add an event listener to the <form> element to eecute a function on submission
-2.  Capture the form's input datat to use elsewhere in the app
-3.  Use the input data to fetch repos from the GitHub API
-4.  Create containers  on the HTML doc to display the data dynamically
-5.  Display the repository Data dynamically
-
-*/
-
 
 //variable to store a reference to the <form> element with an id of "user-form"
 var userFormEl = document.querySelector("#user-form");
@@ -55,7 +34,7 @@ var formSubmitHandler = function(event) {
 var getUserRepos = function(user) {     
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
 
-    fetch(apiUrl) .then(function(response) {
+    fetch(apiUrl).then(function(response) {
         //updating the getUserRepos function to control how the app reacts to a 404 (the request is understood, but the request
         // is searching for something that doesn't exist)
 
@@ -79,20 +58,8 @@ var getUserRepos = function(user) {
         });
     }
 
-    //creating a function to display Repos, this function will accept both the array of repository (data)  and the term we 
-    //searched for as parameters.  For example, the repos array and the user that we searched for.  We first checked to 
-    //make sure that the function was receiving the data, next we added an HTML container for the content.  The data will get 
-    //displayed on the right column of the page.  The column was set up previously in the HTML file, but there still need to be
-    //a unique way in the HTML that we can selet and write the data to.  So we updated the HTML file and added a span element to 
-    //write the search term to, and an empty div to write all of the repository data to.... Now we must add a reference to both 
-    //of the new elements at the top of this js page.
+    
     var displayRepos = function(repos, searchTerm){
-        // **|**|**|**|**|**|**|**|**|**|**|**|**|**   USER HAS NO REPOSITORIES  **|**|**|**|**|**|**|**|**|**|**|**|**|**|**|**|**|
-
-        //Now, what happens if the user exist, but the user doesn't have any repos.  The HTTP request will run, but return a 404 and
-        //return an empty array, resulting in a blank page.  This could be confussing to the user, so to combat this, we will check 
-        //for an empty array and let the user know if there's nothing to display.
-
         // check if api returned any repos
         if (repos.length === 0) {
             repoContainerEl.textContent = "No repositories found.";
@@ -120,13 +87,7 @@ var getUserRepos = function(user) {
             var statusEl = document.createElement("span");  //Remember to display info inline, use the <span> element
             statusEl.classList = "flex-row align-center";
 
-            /*
-            We use an if statement to check how many issues the repository has. If the number is greater than zero, then 
-            we'll display the number of issues and add a red X icon next to it. If there are no issues, we'll display a blue 
-            check mark instead.  The font icons used here come from a service called Font Awesome. They offer a large selection 
-            of free font icons, including icons for social networks, like the GitHub logo at the top of the page!
-
-            */
+            
             if (repos[i].open_issues_count > 0) {
                 statusEl.innerHTML =
                     "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
