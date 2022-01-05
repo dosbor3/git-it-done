@@ -1,4 +1,5 @@
 /*
+6.1 In this lesson, we will build the initial HTML and homepage.js files
 creating a variable to retrieve user repos from gitHub.  This will not display much yet, but 
 will ensure that the js file is linked correctly.  Fittingly, this page searches for GitHub users 
 and lists all of their repositories, tallying the open issues for each one.
