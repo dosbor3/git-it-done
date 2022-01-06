@@ -22,7 +22,11 @@ issues for a single repository.  The steps for fetching API data:
 
 */
 
+//DOM reference to the issue container created in single-repo.html
 var issueContainerEl = document.querySelector("#issues-container");
+
+//DOM referecnt to the limit warning container created in single-repo.html
+var limitWarningEl = document.querySelector("#limit-warning");
 
 var getRepoIssues = function(repo) {
     /*
@@ -43,6 +47,20 @@ var getRepoIssues = function(repo) {
         if (response.ok) {
           response.json().then(function(data) {
             displayIssues(data);
+            
+
+             // **|**|**|**|**|**|**|**|**|**|**|**|**|**   HTTP HEADERS  **|**|**|**|**|**|**|**|**|**|**|**|**|**|**|**|**|
+            /*
+            HTTP headers allow the client and the server to pass additional information with an HTTP request or response. This 
+            often includes information like whether or not to cache (locally store) data and, if so, for how long. This data goes 
+            in the headers because it's often small in file size and not directly pertinent to the content in the body of a request 
+            or response.  For example, the very common Content-Type header specifies the format of the requested resource. The 
+            GitHub API responses always include a Content-Type value of application/json to signify that the response is formatted 
+            as JSON.  You can view the headers on a request or response in DevTools by clicking on the request in the Network tab.
+            */
+
+            // check if api has paginated issues to inform the user that the repo has more than 30 issues
+            displayWarning(repo);
           });
         }
         else {
@@ -84,12 +102,41 @@ var displayIssues = function(issues) {
         } 
         else {
             typeEl.textContent = "(Issue)";
-        }
-
-// append to container
-issueEl.appendChild(typeEl);
-issueContainerEl.appendChild(issueEl);
     }
+
+    // append to container
+    issueEl.appendChild(typeEl);
+    issueContainerEl.appendChild(issueEl);
+
+    }
+    
+};
+
+//creating a new displayWarning() function with a repo parameter which will inform the user if there are more than 30 issues
+//for a given repo
+var displayWarning = function(repo) {
+    //add text to warning container
+    limitWarningEl.textContent = "To See More than 30 issues, visit ";
+
+    var linkEl = document.createElement("a");
+    linkEl.textContent = "See More Issues on GitHub.com";
+    linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
+    linkEl.setAttribute("target", "_blank");
+
+    // append to warning container
+    limitWarningEl.appendChild(linkEl);
 };
 
 getRepoIssues("facebook/react");
+
+
+// **|**|**|**|**|**|**|**|**|**|**|**|**|**   TOPICS LEARNED  **|**|**|**|**|**|**|**|**|**|**|**|**|**|**|**|**|
+/*
+Learned that request and response headers contain additional information about the request, separate from the data 
+itself—like GitHub's Link header that lets you know there are more pages of results to request.
+
+Leveraged a new GitHub API endpoint to request more specific data, using an optional ? string to change how results 
+are sorted.
+
+*/
+
